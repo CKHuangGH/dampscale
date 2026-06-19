@@ -3,7 +3,6 @@
 manage=$(awk NR==1 node_list)
 
 git clone https://github.com/CKHuangGH/dampscale
-mv PS-Bench ps-bench
 rm -rf /home/chuang/.ssh/known_hosts
 
 for j in $(cat node_list)
@@ -23,6 +22,6 @@ ssh -o StrictHostKeyChecking=no root@$j chmod 777 -R /root/dampscale/
 i=$((i+1))
 done
 
-scp node_list root@$manage:/root/mqtt/package/node_list
+scp node_list root@$manage:/root/dampscale/package/node_list
 
 echo "management node is $manage"

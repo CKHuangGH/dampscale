@@ -17,7 +17,7 @@ with open("reserved_management_networks.json", "r") as f:
 subnet = networks["my_subnet"]
 
 cp = 1
-w1 = 3
+w1 = 1
 print(list(subnet[0].free_macs)[1:2])
 
 virt_conf = (
@@ -26,14 +26,14 @@ virt_conf = (
         roles=["cp"],
         number=cp,
         undercloud=roles["role0"],
-        flavour_desc={"core": 16, "mem": 65536},
+        flavour_desc={"core": 4, "mem": 8192},
         macs=list(subnet[0].free_macs)[1:2],
     )
     .add_machine(
         roles=["member"],
         number=w1,
         undercloud=roles["role0"],
-        flavour_desc={"core": 8, "mem": 32768},
+        flavour_desc={"core": 2, "mem": 4096},
         macs=list(subnet[0].free_macs)[2:w1+2],
     ).finalize()
 )
