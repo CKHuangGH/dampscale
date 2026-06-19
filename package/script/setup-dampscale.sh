@@ -27,35 +27,33 @@ done
 
 sleep 5
 
-mgmt_ntp_ip=$(head -n 1 node_list)
-
-> node_ip_all
-
-for i in {2..8}; do
-  new_ip=$(echo "$ip" | sed "s/\.[0-9]*$/.${i}/")
-  echo "$new_ip" >> node_ip_all
-done
-
-part2=$(echo "$ip" | cut -d '.' -f2)
-part3=$(echo "$ip" | cut -d '.' -f3)
-
 while IFS= read -r ip_address; do
-  scp -o StrictHostKeyChecking=no /root/mqtt/package/node_ip_all root@$ip_address:/root/
-  scp -o StrictHostKeyChecking=no /root/mqtt/package/script/ntp.sh root@$ip_address:/root/
+  scp -o StrictHostKeyChecking=no /root/dampscale/package/node_ip_all root@$ip_address:/root/
+  scp -o StrictHostKeyChecking=no /root/dampscale/package/script/ntp.sh root@$ip_address:/root/
 done < "node_ip_all"
 
 while IFS= read -r ip_address; do
   ssh -n -o StrictHostKeyChecking=no root@"$ip_address" mkdir /var/log/chrony
   ssh -n -o StrictHostKeyChecking=no root@"$ip_address" sudo apt-get install -y chrony=4.8*
   ssh -n -o StrictHostKeyChecking=no root@"$ip_address" "nohup bash /root/ntp.sh 2>&1 &"
-  ssh -n -o StrictHostKeyChecking=no root@"$ip_address" "sudo sysctl -w \
-    net.core.rmem_max=134217728 \
-    net.core.wmem_max=134217728 \
-    net.core.rmem_default=67108864 \
-    net.core.wmem_default=8388608 \
-    net.core.netdev_max_backlog=65536"
 done < node_ip_all
 
+helm repo add cilium https://helm.cilium.io/
+helm repo update
+helm install cilium cilium/cilium \
+  --version 1.17.6 \
+  --namespace kube-system \
+  --set operator.replicas=1 \
+  --set operator.nodeSelector."node-role\.kubernetes\.io/control-plane"="" \
+  --set operator.tolerations[0].key=node-role.kubernetes.io/control-plane \
+  --set operator.tolerations[0].operator=Exists \
+  --set operator.tolerations[0].effect=NoSchedule \
+  --set operator.tolerations[1].key=node.kubernetes.io/not-ready \
+  --set operator.tolerations[1].operator=Exists \
+  --set operator.tolerations[1].effect=NoSchedule \
+  --set operator.tolerations[2].key=node.kubernetes.io/unreachable \
+  --set operator.tolerations[2].operator=Exists \
+  --set operator.tolerations[2].effect=NoExecute
 
 
 
@@ -82,8 +80,8 @@ part2=$(echo "$ip" | cut -d '.' -f2)
 part3=$(echo "$ip" | cut -d '.' -f3)
 
 while IFS= read -r ip_address; do
-  scp -o StrictHostKeyChecking=no /root/mqtt/package/node_ip_all root@$ip_address:/root/
-  scp -o StrictHostKeyChecking=no /root/mqtt/package/script/ntp.sh root@$ip_address:/root/
+  scp -o StrictHostKeyChecking=no /root/dampscale/package/node_ip_all root@$ip_address:/root/
+  scp -o StrictHostKeyChecking=no /root/dampscale/package/script/ntp.sh root@$ip_address:/root/
 done < "node_ip_all"
 
 while IFS= read -r ip_address; do
@@ -198,7 +196,7 @@ done
 # docker build -t emqx-with-exporter:latest -f Dockerfile.emqx .
 # 
 
-# cd /root/mqtt/package
+# cd /root/dampscale/package
 # docker save -o ps_bench-runner.tar ps_bench-runner:latest
 # docker save -o mosquitto-with-exporter.tar mosquitto-with-exporter:latest
 # docker save -o emqx-with-exporter.tar emqx-with-exporter:latest
@@ -265,7 +263,7 @@ done
 SRC_FILE="./node_ip_workers"
 
 # Root experiments folder
-BASE_DIR="/root/mqtt/package/exps"
+BASE_DIR="/root/dampscale/package/exps"
 
 # Find all leaf directories under exps and copy the file
 for dir in $(find "$BASE_DIR" -type d); do

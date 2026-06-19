@@ -23,5 +23,6 @@ i=$((i+1))
 done
 
 scp node_list root@$manage:/root/dampscale/package/node_list
+scp node_ip_all root@$manage:/root/dampscale/package/node_ip_all
 
 echo "management node is $manage"

@@ -57,9 +57,22 @@ run_ansible(["afterbuild.yml"], inventory_path=inventory_file)
 # === Save master node IP to file ===
 master_node_ip = vmroles["cp"][0].address
 
-with open("node_list", 'a') as f:
+# 如果你的 worker role 叫 worker
+worker_node_ips = [vm.address for vm in vmroles["member"]]
+
+# node_list 只存 CP IP
+with open("node_list", "a") as f:
     f.write(str(master_node_ip))
     f.write("\n")
+
+# node_ip_all 存 CP + workers
+with open("node_ip_all", "a") as f:
+    f.write(str(master_node_ip))
+    f.write("\n")
+
+    for worker_ip in worker_node_ips:
+        f.write(str(worker_ip))
+        f.write("\n")
 
 print("VM successfully deployed.")
 print("Master node IP:", master_node_ip)

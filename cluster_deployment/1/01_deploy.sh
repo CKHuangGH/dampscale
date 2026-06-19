@@ -10,8 +10,9 @@ echo "Reservation finished. Starting VM installation..."
 
 pids=()
 
-python3 ./script/vm-management-cluster.py &
-pids+=($!)
+python3 ./script/vm-management-cluster.py
+
+sleep 5
 
 python3 ./script/vm-member-cluster-1.py &
 pids+=($!)
