@@ -7,7 +7,7 @@ from datetime import datetime
 en.set_config(ansible_forks=100)
 
 # === Grid'5000 reservation settings ===
-name = "dampscale-1-now-nantes-1-32"
+name = "dampscale-1-now-nantes-1-48"
 clusters = "ecotype"
 site = "nantes"
 duration = "03:10:00"
@@ -23,7 +23,7 @@ conf = (
     en.G5kConf.from_settings(job_type=[], job_name=name_job, walltime=duration)
     .add_network_conf(prod_network)
     .add_network(id="not_linked_to_any_machine", type="slash_22", roles=["my_subnet"], site=site)
-    .add_machine(roles=["role0"], servers=pool, nodes=1, primary_network=prod_network)
+    .add_machine(roles=["role0"], servers=pool, nodes=3, primary_network=prod_network)
     .finalize()
 )
 provider = en.G5k(conf)

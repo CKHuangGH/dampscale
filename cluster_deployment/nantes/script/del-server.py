@@ -7,7 +7,7 @@ from datetime import datetime
 en.set_config(ansible_forks=100)
 
 # === Grid'5000 reservation settings ===
-name = "dampscale-1-now-nantes-1-32"
+name = "dampscale-1-now-nantes-1-48"
 clusters = "ecotype"
 site = "nantes"
 duration = "55:00:00"
