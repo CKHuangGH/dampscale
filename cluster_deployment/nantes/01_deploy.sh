@@ -17,18 +17,6 @@ sleep 5
 python3 ./script/vm-member-cluster-1.py &
 pids+=($!)
 
-python3 ./script/vm-member-cluster-2.py &
-pids+=($!)
-
-python3 ./script/vm-member-cluster-3.py &
-pids+=($!)
-
-python3 ./script/vm-member-cluster-4.py &
-pids+=($!)
-
-python3 ./script/vm-member-cluster-5.py &
-pids+=($!)
-
 echo "Waiting for all VM installation scripts..."
 
 for pid in "${pids[@]}"; do
