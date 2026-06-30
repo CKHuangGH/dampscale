@@ -5,7 +5,7 @@ pids=()
 
 python3 ./script/vm-management-cluster.py &
 
-sleep 5
+sleep 10
 
 python3 ./script/vm-member-cluster-1.py &
 pids+=($!)

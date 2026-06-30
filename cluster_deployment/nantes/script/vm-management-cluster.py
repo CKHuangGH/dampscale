@@ -82,10 +82,10 @@ for i in range(0,1):
 
     run_ansible(["afterbuild.yml"], inventory_path=inventory_file)
 
-with open("cp_node_list", "w") as f:
+with open("cp_node_list", "a") as f:
     for ip in cp_nodes:
         f.write(ip + "\n")
 
-with open("all_node_list", "w") as f:
+with open("all_node_list", "a") as f:
     for ip in all_vm_nodes:
         f.write(ip + "\n")
