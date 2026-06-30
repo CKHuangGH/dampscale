@@ -18,7 +18,7 @@ subnet = networks["my_subnet"]
 
 cp = 1
 w1 = 3
-print(list(subnet[2].free_macs)[1:2])
+print(list(subnet[0].free_macs)[1:2])
 
 virt_conf = (
     en.VMonG5kConf.from_settings(image="/home/chuang/images/debian13-k8s-large.qcow2")
@@ -27,14 +27,14 @@ virt_conf = (
         number=cp,
         undercloud=roles["role0"],
         flavour_desc={"core": 4, "mem": 8192},
-        macs=list(subnet[2].free_macs)[7:8],
+        macs=list(subnet[0].free_macs)[7:8],
     )
     .add_machine(
         roles=["member"],
         number=w1,
         undercloud=roles["role0"],
         flavour_desc={"core": 2, "mem": 4096},
-        macs=list(subnet[2].free_macs)[8:11],
+        macs=list(subnet[0].free_macs)[8:11],
     ).finalize()
 )
 
