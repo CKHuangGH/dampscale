@@ -3,11 +3,17 @@ set -e
 
 pids=()
 
-python3 ./script/vm-management-cluster.py
+python3 ./script/vm-management-cluster.py &
 
 sleep 5
 
 python3 ./script/vm-member-cluster-1.py &
+pids+=($!)
+
+python3 ./script/vm-member-cluster-2.py &
+pids+=($!)
+
+python3 ./script/vm-member-cluster-3.py &
 pids+=($!)
 
 echo "Waiting for all VM installation scripts..."
