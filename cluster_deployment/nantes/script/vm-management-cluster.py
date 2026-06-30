@@ -34,11 +34,11 @@ virt_conf = (
         number=w1,
         undercloud=roles["role0"],
         flavour_desc={"core": 8, "mem": 32768},
-        macs=list(subnet[0].free_macs)[2:w1+2],
+        macs=list(subnet[0].free_macs)[2:3],
     ).finalize()
 )
 
-
+#macs=list(subnet[0].free_macs)[2:w1+2],
 # === Start VMs ===
 vmroles = en.start_virtualmachines(virt_conf,force_deploy=True)
 
