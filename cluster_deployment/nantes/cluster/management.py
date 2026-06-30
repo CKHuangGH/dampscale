@@ -4,7 +4,7 @@ import time
 
 en.set_config(ansible_forks=100)
 
-name = "member_cluster1-2_nantes"
+name = "management_cluster_nantes"
 
 clusters = "ecotype"
 
@@ -38,9 +38,9 @@ roles = en.sync_info(roles, networks)
 subnet = networks["my_subnet"]
 
 cp = 1
-w1 = 2
+w1 = 1
 
-for i in range(0,3):
+for i in range(0,1):
     start = i * (cp + w1)
     virt_conf = (
         en.VMonG5kConf.from_settings(image="/home/chuang/images/debian13-k8s-large.qcow2")
@@ -62,6 +62,9 @@ for i in range(0,3):
 
     vmroles = en.start_virtualmachines(virt_conf,force_deploy=True)
 
+    print(vmroles)
+
+    #print(networks)
     tempname=name_job+str(i)
 
     inventory_file = "kubefed_inventory_cluster"+ str(tempname) +".ini" 
