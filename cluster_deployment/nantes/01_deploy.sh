@@ -1,13 +1,6 @@
 #!/bin/bash
 set -e
 
-mkdir -p logs
-
-echo "Reserving resources..."
-python3 ./script/server.py
-
-echo "Reservation finished. Starting VM installation..."
-
 pids=()
 
 python3 ./script/vm-management-cluster.py
