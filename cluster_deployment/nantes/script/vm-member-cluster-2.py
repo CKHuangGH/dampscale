@@ -62,9 +62,6 @@ for i in range(0,3):
 
     vmroles = en.start_virtualmachines(virt_conf,force_deploy=True)
 
-    print(vmroles)
-
-    #print(networks)
     tempname=name_job+str(i)
 
     inventory_file = "kubefed_inventory_cluster"+ str(tempname) +".ini" 
